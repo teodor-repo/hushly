@@ -1,0 +1,9 @@
+{
+  "sections": {
+    "hushly": {
+      "type": "hushly-landing",
+      "settings": {}
+    }
+  },
+  "order": ["hushly"]
+}

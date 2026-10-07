@@ -1,0 +1,559 @@
+{%- comment -%}
+  Hushly landing page — single Shopify section.
+  Paste into: Online Store → Themes → Edit code → Sections → Add a new section ("hushly-landing").
+  Then add it to a page in the theme editor and pick your product + images in the section settings.
+{%- endcomment -%}
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;1,9..144,300;1,9..144,400&display=swap" rel="stylesheet">
+
+{%- liquid
+  assign product = section.settings.product
+  assign one = nil
+  assign three = nil
+  if product != blank
+    for v in product.variants
+      assign packs = v.title | split: ' ' | first | plus: 0
+      if packs == 1
+        assign one = v
+      elsif packs == 3
+        assign three = v
+      endif
+    endfor
+    if three
+      assign default_variant = three
+    else
+      assign default_variant = product.selected_or_first_available_variant
+    endif
+    if one == nil
+      assign one = product.variants.first
+    endif
+    assign plan_group = product.selling_plan_groups.first
+  endif
+-%}
+
+<div class="hl" id="hushly-{{ section.id }}">
+<style>
+  #hushly-{{ section.id }}{--navy:#131733;--navy2:#1F2449;--navy3:#0D0F24;--lav:#BAB5F2;--lavL:#EDEBFC;--cream:#FAF5ED;--moon:#F5C973;--muted:#666B85;--mutedD:#B8BAD6;--line:#E0DEEB;font-family:'DM Sans',sans-serif;color:var(--navy);line-height:1.5;-webkit-font-smoothing:antialiased}
+  #hushly-{{ section.id }} *{box-sizing:border-box}
+  #hushly-{{ section.id }} h1,#hushly-{{ section.id }} h2,#hushly-{{ section.id }} h3{font-family:'Fraunces',serif;font-weight:300;letter-spacing:-.02em;line-height:1.05;margin:0}
+  #hushly-{{ section.id }} h1 em,#hushly-{{ section.id }} h2 em{font-style:italic}
+  #hushly-{{ section.id }} p{margin:0}
+  #hushly-{{ section.id }} img,#hushly-{{ section.id }} svg.hl-ph,#hushly-{{ section.id }} video{display:block;width:100%;height:100%;object-fit:cover}
+  .hl-wrap{max-width:1200px;margin:0 auto;padding:0 24px}
+  .hl-sec{padding:112px 0}
+  .hl-center{text-align:center}
+  .hl-eyebrow{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+  .hl-h2{font-size:56px}
+  .hl-lead{font-size:18px;color:var(--muted);max-width:720px;margin:16px auto 0}
+  .hl-stars{color:var(--moon);letter-spacing:2px;font-size:15px}
+  .hl-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:19px 34px;border-radius:999px;font-weight:600;font-size:17px;text-decoration:none;border:0;cursor:pointer;font-family:inherit;transition:transform .15s}
+  .hl-btn:hover{transform:translateY(-1px)}
+  .hl-btn--moon{background:var(--moon);color:var(--navy)}
+  .hl-btn--navy{background:var(--navy);color:#fff}
+  .hl-btn--block{width:100%}
+  .hl-check{display:inline-flex;align-items:center;gap:10px;font-size:14px}
+  .hl-check:before{content:"";flex:0 0 22px;height:22px;border-radius:50%;background:var(--lav) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.5 11.5l3 3L15.5 8' stroke='%23131733' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/22px no-repeat}
+  .hl-media{border-radius:24px;overflow:hidden;background:linear-gradient(135deg,var(--lavL),var(--lav))}
+  .hl-ph{fill:rgba(19,23,51,.25)}
+  .hl-pill{display:inline-block;padding:5px 10px;border-radius:999px;font-size:11px;font-weight:700;letter-spacing:.06em;background:var(--moon);color:var(--navy)}
+
+  /* Announcement */
+  .hl-bar{background:var(--navy3);color:#fff;text-align:center;font-size:14px;font-weight:500;padding:12px 16px}
+  .hl-bar a{color:var(--moon);font-weight:600;text-decoration:none;margin-left:10px}
+
+  /* Hero */
+  .hl-hero{background:var(--navy);color:#fff;padding:72px 0 88px}
+  .hl-hero__grid{display:grid;grid-template-columns:1fr 560px;gap:64px;align-items:center}
+  .hl-hero h1{font-size:88px;line-height:.98}
+  .hl-hero h1 em{color:var(--lav)}
+  .hl-hero__rating{display:flex;align-items:center;gap:12px;font-size:15px;color:var(--mutedD);margin-bottom:28px}
+  .hl-hero__text{font-size:19px;color:var(--mutedD);max-width:540px;margin:28px 0}
+  .hl-hero__checks{display:flex;gap:24px;flex-wrap:wrap;margin-top:16px;color:var(--mutedD)}
+  .hl-hero__bens{display:grid;grid-template-columns:1fr 1fr;gap:20px 16px;border-top:1px solid rgba(255,255,255,.12);padding-top:28px;margin-top:28px}
+  .hl-hero__bens b{display:block;font-weight:600;font-size:16px}
+  .hl-hero__bens span{font-size:14px;color:var(--mutedD)}
+  .hl-hero__bens div{padding-left:20px;position:relative}
+  .hl-hero__bens div:before{content:"";position:absolute;left:0;top:8px;width:8px;height:8px;border-radius:50%;background:var(--moon)}
+  .hl-hero__vis{position:relative;aspect-ratio:1/1}
+  .hl-hero__vis .hl-media{height:100%;border-radius:28px}
+  .hl-hero__badge{position:absolute;top:-24px;right:24px;width:136px;height:136px;border-radius:50%;background:var(--moon);color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center;transform:rotate(-8deg);text-align:center}
+  .hl-hero__badge small{font-size:13px;font-weight:700;letter-spacing:.1em}
+  .hl-hero__badge strong{font-family:'Fraunces',serif;font-style:italic;font-weight:400;font-size:22px;line-height:1.1}
+  .hl-hero__badge span{font-size:12px}
+  .hl-hero__rate{position:absolute;left:-36px;bottom:40px;background:#fff;color:var(--navy);border-radius:16px;padding:16px 20px;display:flex;align-items:center;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.18)}
+  .hl-hero__rate b{display:block;font-size:16px}
+  .hl-hero__rate span{font-size:12px;color:var(--muted)}
+
+  /* Reviews */
+  .hl-reviews{background:var(--cream)}
+  .hl-cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+  .hl-card{background:#fff;border-radius:20px;padding:32px;display:flex;flex-direction:column;gap:16px}
+  .hl-card h3{font-size:22px;font-weight:400;line-height:1.25}
+  .hl-card p{color:var(--muted);font-size:16px}
+  .hl-author{display:flex;align-items:center;gap:12px;margin-top:auto}
+  .hl-author i{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--lavL),var(--lav))}
+  .hl-author b{display:block;font-size:15px}
+  .hl-author span{font-size:13px;color:var(--muted)}
+
+  /* Steps */
+  .hl-step{background:var(--cream);border-radius:24px;padding:24px 24px 32px;display:flex;flex-direction:column;gap:16px}
+  .hl-step .hl-media{aspect-ratio:336/260;border-radius:16px}
+  .hl-step h3{font-size:30px;font-weight:400;display:flex;align-items:center;gap:12px}
+  .hl-step p{color:var(--muted)}
+  .hl-replaces{display:flex;flex-wrap:wrap;justify-content:center;gap:12px 20px;background:var(--lavL);border-radius:999px;padding:18px 32px;margin:56px auto 0;width:fit-content;font-size:15px}
+  .hl-replaces s{color:var(--muted)}
+
+  /* Results */
+  .hl-results{background:var(--navy2);color:#fff}
+  .hl-split{display:grid;grid-template-columns:540px 1fr;gap:80px;align-items:center}
+  .hl-split .hl-media{aspect-ratio:540/620;border-radius:28px}
+  .hl-results h2{font-size:60px;margin:16px 0 28px}
+  .hl-results h2 em{color:var(--lav)}
+  .hl-stat{display:flex;align-items:center;gap:28px;border-top:1px solid rgba(255,255,255,.12);padding:22px 0}
+  .hl-stat b{font-family:'Fraunces',serif;font-weight:400;font-size:56px;color:var(--moon);line-height:1;min-width:150px}
+  .hl-stat span{font-size:17px;color:var(--mutedD)}
+  .hl-note{font-size:12px;color:var(--mutedD);opacity:.8;margin-top:20px}
+
+  /* Buy box */
+  .hl-buy{background:var(--cream);padding:104px 0}
+  .hl-buy__grid{display:grid;grid-template-columns:580px 1fr;gap:64px;align-items:start}
+  .hl-gallery__main{aspect-ratio:1/1;border-radius:24px}
+  .hl-gallery__thumbs{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-top:12px}
+  .hl-gallery__thumbs button{aspect-ratio:108/88;border-radius:12px;overflow:hidden;border:2px solid transparent;padding:0;cursor:pointer;background:linear-gradient(135deg,var(--lavL),var(--lav))}
+  .hl-gallery__thumbs button.is-active{border-color:var(--navy)}
+  .hl-buy__info{display:flex;flex-direction:column;gap:18px}
+  .hl-buy__info h2{font-size:46px}
+  .hl-opt{display:block;background:#fff;border:1px solid var(--line);border-radius:18px;padding:20px 22px;cursor:pointer}
+  .hl-opt.is-active{border:2px solid var(--navy);padding:19px 21px}
+  .hl-opt input{position:absolute;opacity:0;pointer-events:none}
+  .hl-opt__top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .hl-opt__name{display:flex;align-items:center;gap:12px;font-weight:600;font-size:18px;flex-wrap:wrap}
+  .hl-opt__name:before{content:"";width:20px;height:20px;border-radius:50%;border:1.5px solid var(--mutedD);flex:0 0 20px}
+  .hl-opt.is-active .hl-opt__name:before{border:6px solid var(--navy)}
+  .hl-opt__price{font-size:22px;font-weight:700}
+  .hl-opt__price s{font-size:15px;font-weight:400;color:var(--muted);margin-right:8px}
+  .hl-opt__sub{display:flex;justify-content:space-between;gap:12px;padding-left:32px;margin-top:6px;font-size:13px;color:var(--muted);flex-wrap:wrap}
+  .hl-opt__sub b{color:var(--navy);font-weight:600}
+  .hl-perks{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;background:#fff;border-radius:14px;padding:16px 20px}
+  .hl-perks .hl-check{font-size:13px}
+  .hl-small{font-size:13px;color:var(--muted);text-align:center}
+
+  /* Comparison */
+  .hl-table{width:100%;border-collapse:separate;border-spacing:0;border:1px solid var(--line);border-radius:24px;overflow:hidden;margin-top:56px}
+  .hl-table th,.hl-table td{padding:18px 16px;text-align:center;border-top:1px solid var(--line);font-size:16px}
+  .hl-table thead th{border-top:0;font-weight:500;color:var(--muted);font-size:15px}
+  .hl-table td:first-child,.hl-table th:first-child{text-align:left;font-weight:500;padding-left:28px}
+  .hl-table .is-us{background:var(--lavL)}
+  .hl-table .hl-logo{display:inline-block;background:var(--navy);color:#fff;border-radius:999px;padding:6px 16px 8px;font-family:'Fraunces',serif;font-weight:600;font-size:20px}
+  .hl-yes,.hl-no{display:inline-block;width:22px;height:22px;border-radius:50%;vertical-align:middle}
+  .hl-yes{background:var(--lav) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M6.5 11.5l3 3L15.5 8' stroke='%23131733' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/22px no-repeat}
+  .hl-no{background:#E6E4EE url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 22 22'%3E%3Cpath d='M8 8l6 6M14 8l-6 6' stroke='%239091A3' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E") center/22px no-repeat}
+
+  /* Videos */
+  .hl-videos{background:var(--lavL)}
+  .hl-vids{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:56px}
+  .hl-vid .hl-media{aspect-ratio:9/14;border-radius:24px;position:relative}
+  .hl-vid .hl-play{position:absolute;inset:0;margin:auto;width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;pointer-events:none}
+  .hl-vid .hl-tag{position:absolute;top:16px;left:16px;background:rgba(19,23,51,.85);color:#fff;font-size:12px;font-weight:600;border-radius:999px;padding:6px 12px}
+  .hl-vid h3{font-size:22px;font-weight:400;margin:14px 0 6px}
+  .hl-vid p{font-size:13px;color:var(--muted)}
+
+  /* FAQ + guarantee */
+  .hl-faqsec{background:var(--cream)}
+  .hl-faq__grid{display:grid;grid-template-columns:1fr 496px;gap:64px;align-items:start}
+  .hl-faq h2{font-size:52px;margin:20px 0 12px}
+  .hl-faq details{border-bottom:1px solid rgba(19,23,51,.12);padding:22px 0}
+  .hl-faq summary{list-style:none;cursor:pointer;display:flex;justify-content:space-between;gap:16px;font-weight:600;font-size:18px}
+  .hl-faq summary::-webkit-details-marker{display:none}
+  .hl-faq summary:after{content:"+";font-size:26px;font-weight:400;color:var(--muted);line-height:1}
+  .hl-faq details[open] summary:after{content:"−"}
+  .hl-faq details p{color:var(--muted);margin-top:12px;font-size:16px}
+  .hl-guar{background:var(--navy);color:#fff;border-radius:28px;padding:44px 40px;display:flex;flex-direction:column;gap:22px;align-items:flex-start}
+  .hl-seal{width:120px;height:120px;border-radius:50%;background:var(--moon);color:var(--navy);display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .hl-seal b{font-family:'Fraunces',serif;font-weight:400;font-size:44px;line-height:1}
+  .hl-seal span{font-size:11px;font-weight:700;letter-spacing:.14em}
+  .hl-guar h2{font-size:44px}
+  .hl-guar h2 em{color:var(--lav)}
+  .hl-guar p{color:var(--mutedD)}
+
+  /* Final offer */
+  .hl-final{background:var(--navy);color:#fff}
+  .hl-final .hl-split{grid-template-columns:528px 1fr;gap:72px}
+  .hl-final .hl-media{aspect-ratio:528/640}
+  .hl-final h2{font-size:56px;margin:16px 0 24px}
+  .hl-final h2 em{color:var(--lav)}
+  .hl-receipt{background:var(--navy2);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px;margin-bottom:24px}
+  .hl-line{display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .hl-line b{display:block;font-weight:600}
+  .hl-line span{font-size:13px;color:var(--mutedD)}
+  .hl-line s{color:var(--mutedD);font-size:14px;margin-right:10px}
+  .hl-line strong{font-size:16px}
+  .hl-line--total strong{font-size:24px;color:var(--moon)}
+  .hl-hr{height:1px;background:rgba(255,255,255,.12)}
+  .hl-final .hl-perks{background:transparent;padding:16px 0 0;color:var(--mutedD)}
+  .hl-disclaimer{font-size:12px;color:var(--muted);text-align:center;padding:32px 24px;background:#fff}
+
+  /* Mobile */
+  @media (max-width:749px){
+    .hl-sec,.hl-buy{padding:64px 0}
+    .hl-wrap{padding:0 20px}
+    .hl-h2{font-size:34px}
+    .hl-lead{font-size:16px}
+    .hl-hero{padding:32px 0 56px}
+    .hl-hero__grid,.hl-split,.hl-buy__grid,.hl-faq__grid,.hl-final .hl-split{grid-template-columns:1fr;gap:32px}
+    .hl-hero__vis{order:-1}
+    .hl-hero h1{font-size:46px}
+    .hl-hero__text{font-size:17px;margin:20px 0}
+    .hl-hero__bens{grid-template-columns:1fr}
+    .hl-hero__badge{right:-6px;top:-12px;width:112px;height:112px}
+    .hl-hero__badge strong{font-size:18px}
+    .hl-hero__rate{left:10px;bottom:16px}
+    .hl-hero .hl-btn,.hl-results .hl-btn{width:100%}
+    .hl-cards3,.hl-steps{grid-template-columns:1fr !important;gap:16px;margin-top:32px}
+    .hl-replaces{border-radius:20px;margin-top:32px}
+    .hl-results h2,.hl-final h2,.hl-guar h2,.hl-faq h2,.hl-buy__info h2{font-size:30px}
+    .hl-stat b{font-size:34px;min-width:90px}
+    .hl-stat span{font-size:15px}
+    .hl-table{margin-top:32px}
+    .hl-table th,.hl-table td{padding:12px 4px;font-size:10px}
+    .hl-table td:first-child,.hl-table th:first-child{padding-left:12px;font-size:13px}
+    .hl-table .hl-logo{font-size:12px;padding:4px 8px}
+    .hl-vids{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:32px -20px 0;padding:0 20px 8px;gap:12px}
+    .hl-vid{flex:0 0 240px;scroll-snap-align:start}
+    .hl-guar{padding:32px 24px}
+  }
+</style>
+
+{%- comment -%} 00 · Announcement {%- endcomment -%}
+<div class="hl-bar">{{ section.settings.announcement }}<a href="#hl-shop-{{ section.id }}">Claim yours →</a></div>
+
+{%- comment -%} 02 · Hero {%- endcomment -%}
+<section class="hl-hero">
+  <div class="hl-wrap hl-hero__grid">
+    <div>
+      <div class="hl-hero__rating"><span class="hl-stars">★★★★★</span>{{ section.settings.loved_by }}</div>
+      <h1>{{ section.settings.hero_line_1 }}<br><em>{{ section.settings.hero_line_2 }}</em></h1>
+      <p class="hl-hero__text">{{ section.settings.hero_text }}</p>
+      <a class="hl-btn hl-btn--moon" href="#hl-shop-{{ section.id }}">{{ section.settings.cta_label }} →</a>
+      <div class="hl-hero__checks"><span class="hl-check">60-night money-back guarantee</span><span class="hl-check">Free US shipping</span></div>
+      <div class="hl-hero__bens">
+        <div><b>Quieter nights*</b><span>Gently opens your airways</span></div>
+        <div><b>Wake up refreshed*</b><span>Deeper-feeling sleep</span></div>
+        <div><b>Gentle on skin</b><span>Hypoallergenic adhesive</span></div>
+        <div><b>Nothing to charge</b><span>No devices, no noise</span></div>
+      </div>
+    </div>
+    <div class="hl-hero__vis">
+      <div class="hl-media">
+        {%- if section.settings.hero_image != blank -%}{{ section.settings.hero_image | image_url: width: 1200 | image_tag: loading: 'eager', alt: section.settings.hero_image.alt }}{%- elsif product.featured_image -%}{{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'eager' }}{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'hl-ph' }}{%- endif -%}
+      </div>
+      <div class="hl-hero__badge"><small>BUY 2</small><strong>Get 1 Free</strong><span>Limited time</span></div>
+      <div class="hl-hero__rate"><span class="hl-stars">★★★★★</span><div><b>{{ section.settings.rating }} / 5</b><span>{{ section.settings.review_count }} reviews</span></div></div>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 03 · Reviews {%- endcomment -%}
+<section class="hl-sec hl-reviews">
+  <div class="hl-wrap hl-center">
+    <h2 class="hl-h2">Sleepers <em>(and their partners)</em><br>love Hushly</h2>
+    <p class="hl-lead"><span class="hl-stars">★★★★★</span> {{ section.settings.rating }} out of 5 · based on {{ section.settings.review_count }} reviews</p>
+    <div class="hl-cards3" style="text-align:left">
+      {%- for i in (1..3) -%}
+        {%- assign t = 'review_' | append: i | append: '_title' -%}{%- assign b = 'review_' | append: i | append: '_text' -%}{%- assign n = 'review_' | append: i | append: '_name' -%}
+        <div class="hl-card"><span class="hl-stars">★★★★★</span><h3>{{ section.settings[t] }}</h3><p>{{ section.settings[b] }}</p><div class="hl-author"><i></i><div><b>{{ section.settings[n] }}</b><span>Verified buyer</span></div></div></div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 04 · How it works {%- endcomment -%}
+<section class="hl-sec">
+  <div class="hl-wrap hl-center">
+    <p class="hl-eyebrow">How it works</p>
+    <h2 class="hl-h2" style="margin-top:20px">Mouth breathing could be<br>costing you <em>better sleep.</em></h2>
+    <p class="hl-lead">Breathing through your mouth at night can mean a dry mouth, a noisy bedroom and a groggy morning.* Hushly makes nose breathing the easy default — in three simple steps.</p>
+    <div class="hl-cards3 hl-steps" style="text-align:left">
+      {%- assign step_titles = 'Apply,Breathe,Sleep' | split: ',' -%}
+      {%- assign step_texts = 'Apply the nasal strip. Its flexible bands gently lift your nostrils to help open your airways.|Breathe easier through your nose as you drift off — no gadgets, nothing to charge.|Drift off quietly and wake up feeling refreshed.* Peel it off gently in the morning.' | split: '|' -%}
+      {%- for i in (1..3) -%}
+        {%- assign k = 'step_' | append: i | append: '_image' -%}{%- assign idx = i | minus: 1 -%}
+        <div class="hl-step">
+          <div class="hl-media">{%- if section.settings[k] != blank -%}{{ section.settings[k] | image_url: width: 800 | image_tag: loading: 'lazy' }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'hl-ph' }}{%- endif -%}</div>
+          <h3><span class="hl-pill">0{{ i }}</span>{{ step_titles[idx] }}</h3>
+          <p>{{ step_texts[idx] }}</p>
+        </div>
+      {%- endfor -%}
+    </div>
+    <div class="hl-replaces"><b>Hushly replaces:</b><s>Mouth guards</s><s>Chin straps</s><s>Snoring apps</s><s>Earplugs (for your partner)</s></div>
+  </div>
+</section>
+
+{%- comment -%} 05 · Results {%- endcomment -%}
+<section class="hl-sec hl-results">
+  <div class="hl-wrap hl-split">
+    <div class="hl-media">{%- if section.settings.results_image != blank -%}{{ section.settings.results_image | image_url: width: 1100 | image_tag: loading: 'lazy' }}{%- else -%}{{ 'lifestyle-2' | placeholder_svg_tag: 'hl-ph' }}{%- endif -%}</div>
+    <div>
+      <p class="hl-eyebrow" style="color:var(--moon)">The results</p>
+      <h2>Real people.<br><em>Quieter nights.</em></h2>
+      <div class="hl-stat"><b>{{ section.settings.stat_1 }}</b><span>said their nights felt quieter within the first week*</span></div>
+      <div class="hl-stat"><b>{{ section.settings.stat_2 }}</b><span>woke up feeling more refreshed*</span></div>
+      <div class="hl-stat" style="margin-bottom:28px"><b>{{ section.settings.stat_3 }}</b><span>of partners noticed a difference*</span></div>
+      <a class="hl-btn hl-btn--moon" href="#hl-shop-{{ section.id }}">{{ section.settings.cta_label }} →</a>
+      <p class="hl-note">{{ section.settings.stats_footnote }}</p>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 06 · Buy box {%- endcomment -%}
+<section class="hl-buy" id="hl-shop-{{ section.id }}">
+  <div class="hl-wrap hl-buy__grid">
+    <div class="hl-gallery">
+      <div class="hl-media hl-gallery__main" data-hl-main>
+        {%- if product.featured_image -%}{{ product.featured_image | image_url: width: 1200 | image_tag: loading: 'lazy' }}{%- else -%}{{ 'product-1' | placeholder_svg_tag: 'hl-ph' }}{%- endif -%}
+      </div>
+      <div class="hl-gallery__thumbs">
+        {%- if product.images.size > 0 -%}
+          {%- for img in product.images limit: 5 -%}
+            <button type="button" class="{% if forloop.first %}is-active{% endif %}" data-hl-thumb="{{ img | image_url: width: 1200 }}">{{ img | image_url: width: 240 | image_tag: loading: 'lazy' }}</button>
+          {%- endfor -%}
+        {%- else -%}
+          {%- for i in (1..5) -%}<button type="button">{{ 'product-' | append: i | placeholder_svg_tag: 'hl-ph' }}</button>{%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+
+    <div class="hl-buy__info">
+      <span class="hl-pill" style="background:var(--navy);color:#fff;width:fit-content">BEST SELLER</span>
+      <div style="display:flex;gap:10px;align-items:center;font-size:14px;color:var(--muted)"><span class="hl-stars">★★★★★</span>{{ section.settings.rating }} · {{ section.settings.review_count }} reviews</div>
+      <h2>{% if product %}{{ product.title }}{% else %}The Hushly Sleep Ritual{% endif %}</h2>
+      <p style="color:var(--muted)">{{ section.settings.pack_description }}</p>
+
+      {%- if product -%}
+        {%- form 'product', product, class: 'hl-form' -%}
+          <input type="hidden" name="id" value="{{ default_variant.id }}" data-hl-id>
+          <input type="hidden" name="selling_plan" value="" data-hl-plan disabled>
+          <input type="hidden" name="return_to" value="/checkout">
+          <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:16px">
+            {%- for v in product.variants -%}
+              {%- liquid
+                assign packs = v.title | split: ' ' | first | plus: 0
+                if packs < 1
+                  assign packs = 1
+                endif
+                assign nights = packs | times: 30
+              -%}
+              <label class="hl-opt{% if v.id == default_variant.id %} is-active{% endif %}">
+                <input type="radio" name="hl-option" value="{{ v.id }}" data-variant="{{ v.id }}" {% if v.id == default_variant.id %}checked{% endif %} {% unless v.available %}disabled{% endunless %}>
+                <div class="hl-opt__top">
+                  <span class="hl-opt__name">{{ v.title }}{% if packs == 3 %} <span class="hl-pill">{{ section.settings.bundle_badge }}</span>{% endif %}</span>
+                  <span class="hl-opt__price">{% if v.compare_at_price > v.price %}<s>{{ v.compare_at_price | money }}</s>{% endif %}{{ v.price | money }}</span>
+                </div>
+                <div class="hl-opt__sub"><span>{{ nights }} nights{% if packs > 1 %} · free shipping{% endif %}{% unless v.available %} · sold out{% endunless %}</span><b>{{ v.price | divided_by: nights | money }} / night</b></div>
+              </label>
+            {%- endfor -%}
+
+            {%- if plan_group -%}
+              {%- for plan in plan_group.selling_plans -%}
+                {%- assign alloc = nil -%}
+                {%- for a in one.selling_plan_allocations -%}{%- if a.selling_plan.id == plan.id -%}{%- assign alloc = a -%}{%- endif -%}{%- endfor -%}
+                {%- if alloc -%}
+                  <label class="hl-opt">
+                    <input type="radio" name="hl-option" value="plan-{{ plan.id }}" data-variant="{{ one.id }}" data-plan="{{ plan.id }}">
+                    <div class="hl-opt__top">
+                      <span class="hl-opt__name">Subscribe &amp; Save <span class="hl-pill" style="background:var(--lavL)">{{ plan.name }}</span></span>
+                      <span class="hl-opt__price"><s>{{ one.price | money }}</s>{{ alloc.price | money }}</span>
+                    </div>
+                    <div class="hl-opt__sub"><span>{{ plan.description | default: 'Skip or cancel anytime' }}</span><b>{{ alloc.price | divided_by: 30 | money }} / night</b></div>
+                  </label>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+          <button type="submit" class="hl-btn hl-btn--navy hl-btn--block" {% unless default_variant.available %}disabled{% endunless %}>{{ section.settings.cta_label }} →</button>
+        {%- endform -%}
+      {%- else -%}
+        <div class="hl-opt is-active"><div class="hl-opt__top"><span class="hl-opt__name">Pick your product</span></div><div class="hl-opt__sub"><span>Choose a product in the section settings to show its variants and prices here.</span></div></div>
+        <a class="hl-btn hl-btn--navy hl-btn--block" href="#">{{ section.settings.cta_label }} →</a>
+      {%- endif -%}
+
+      <div class="hl-perks"><span class="hl-check">Free US shipping</span><span class="hl-check">60-night guarantee</span><span class="hl-check">Skip or cancel anytime</span></div>
+      <p class="hl-small">{{ section.settings.buybox_stat }}</p>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 07 · Comparison {%- endcomment -%}
+<section class="hl-sec">
+  <div class="hl-wrap">
+    <div class="hl-center"><p class="hl-eyebrow">The smarter fix</p><h2 class="hl-h2" style="margin-top:16px">Why Hushly beats<br><em>the usual fixes</em></h2></div>
+    <table class="hl-table">
+      <thead><tr><th></th><th class="is-us"><span class="hl-logo">hushly</span></th><th>Mouth guards</th><th>Chin straps</th><th>Snoring apps</th></tr></thead>
+      <tbody>
+        {%- assign rows = 'Supports nose breathing:1100|Opens nasal passages:1000|Comfortable all night:1001|Nothing to clean or charge:1011|Under $1 a night:1110|Travel-friendly:1111' | split: '|' -%}
+        {%- for r in rows -%}
+          {%- assign parts = r | split: ':' -%}{%- assign marks = parts[1] | split: '' -%}
+          <tr><td>{{ parts[0] }}</td><td class="is-us"><span class="hl-yes"></span></td>{%- for mk in marks offset: 1 -%}<td><span class="{% if mk == '1' %}hl-yes{% else %}hl-no{% endif %}"></span></td>{%- endfor -%}</tr>
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{%- comment -%} 08 · Video reviews {%- endcomment -%}
+<section class="hl-sec hl-videos">
+  <div class="hl-wrap">
+    <div class="hl-center"><p class="hl-eyebrow">Real reviews</p><h2 class="hl-h2" style="margin-top:16px">Watch <em>real sleepers</em></h2><p class="hl-lead">Hear why they made Hushly their nightly ritual.</p></div>
+    <div class="hl-vids">
+      {%- assign vid_tags = 'Light sleeper,Partner of a snorer,Frequent traveler' | split: ',' -%}
+      {%- for i in (1..3) -%}
+        {%- assign vk = 'video_' | append: i -%}{%- assign tk = 'video_' | append: i | append: '_title' -%}{%- assign idx = i | minus: 1 -%}
+        <div class="hl-vid">
+          <div class="hl-media">
+            {%- if section.settings[vk] != blank -%}{{ section.settings[vk] | video_tag: controls: true, playsinline: true }}{%- else -%}{{ 'lifestyle-1' | placeholder_svg_tag: 'hl-ph' }}<span class="hl-play"><svg width="24" height="26" viewBox="0 0 24 26"><path d="M22 13L3 24V2z" fill="#131733"/></svg></span>{%- endif -%}
+            <span class="hl-tag">{{ vid_tags[idx] }}</span>
+          </div>
+          <h3>{{ section.settings[tk] }}</h3>
+          <p><span class="hl-stars">★★★★★</span> Verified buyer</p>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 09 · FAQ + guarantee {%- endcomment -%}
+<section class="hl-sec hl-faqsec">
+  <div class="hl-wrap hl-faq__grid">
+    <div class="hl-faq">
+      <p class="hl-eyebrow">FAQ</p>
+      <h2>Questions?<br><em>We’ve got you.</em></h2>
+      <details open><summary>Is it safe to wear every night?</summary><p>Hushly strips are drug-free and use a gentle, hypoallergenic adhesive designed for nightly use. If you have a breathing or sleep condition (like sleep apnea), talk to your doctor before use.</p></details>
+      <details><summary>Will it hurt to take off?</summary><p>No. Peel it off slowly from one end in the morning — a little warm water helps if your skin is sensitive.</p></details>
+      <details><summary>Will it fit my nose?</summary><p>The flexible strip is designed to fit most adult noses. Place it just above the flare of your nostrils.</p></details>
+      <details><summary>I have sensitive skin — will it irritate?</summary><p>The adhesive is hypoallergenic. Apply to clean, dry skin and skip a night if you notice redness.</p></details>
+      <details><summary>How long does one pack last?</summary><p>One pack has 30 strips — one for every night of the month.</p></details>
+      <details><summary>Can I skip or cancel my subscription?</summary><p>Yes, anytime from your account or by emailing us.</p></details>
+    </div>
+    <div class="hl-guar">
+      <div class="hl-seal"><b>60</b><span>NIGHTS</span></div>
+      <p class="hl-eyebrow" style="color:var(--moon)">The Hushly promise</p>
+      <h2>Sleep better —<br><em>or it’s on us.</em></h2>
+      <p>Try Hushly for 60 nights. If it’s not for you, email {{ section.settings.support_email }} and we’ll refund every cent — even if the box is empty.</p>
+      <a class="hl-btn hl-btn--moon" href="#hl-shop-{{ section.id }}">Try It Risk-Free →</a>
+    </div>
+  </div>
+</section>
+
+{%- comment -%} 10 · Final offer {%- endcomment -%}
+<section class="hl-sec hl-final">
+  <div class="hl-wrap hl-split">
+    <div class="hl-media">{%- if section.settings.final_image != blank -%}{{ section.settings.final_image | image_url: width: 1100 | image_tag: loading: 'lazy' }}{%- else -%}{{ 'product-3' | placeholder_svg_tag: 'hl-ph' }}{%- endif -%}</div>
+    <div>
+      <p class="hl-eyebrow" style="color:var(--moon)">Your first order</p>
+      <h2>Better nights for<br><em>less than $1 a night.</em></h2>
+      {%- if three and one -%}
+        {%- assign two_price = one.price | times: 2 -%}
+        <div class="hl-receipt">
+          <div class="hl-line"><div><b>{{ product.title }} × 2</b><span>30 strips per pack · 60 nights</span></div><strong>{{ two_price | money }}</strong></div>
+          <div class="hl-hr"></div>
+          <p class="hl-eyebrow" style="color:var(--moon);font-size:11px">Buy 2, get 1 free</p>
+          <div class="hl-line"><div><b>{{ product.title }} × 1</b><span>+30 nights, on us</span></div><div><s>{{ one.price | money }}</s><strong>FREE</strong></div></div>
+          <div class="hl-hr"></div>
+          <div class="hl-line hl-line--total"><div><b>Total today</b><span>90 nights · {{ three.price | divided_by: 90 | money }} / night</span></div><div><s>{{ three.compare_at_price | default: two_price | money }}</s><strong>{{ three.price | money }}</strong></div></div>
+        </div>
+      {%- endif -%}
+      <a class="hl-btn hl-btn--moon hl-btn--block" href="#hl-shop-{{ section.id }}">{{ section.settings.cta_label }} →</a>
+      <div class="hl-perks"><span class="hl-check">60-night guarantee</span><span class="hl-check">Free US shipping</span><span class="hl-check">Skip or cancel anytime</span></div>
+    </div>
+  </div>
+</section>
+
+<p class="hl-disclaimer">{{ section.settings.disclaimer }}</p>
+
+<script>
+(function(){
+  var root=document.getElementById('hushly-{{ section.id }}');if(!root)return;
+  var idIn=root.querySelector('[data-hl-id]'),planIn=root.querySelector('[data-hl-plan]');
+  root.querySelectorAll('input[name="hl-option"]').forEach(function(r){
+    r.addEventListener('change',function(){
+      root.querySelectorAll('.hl-opt').forEach(function(o){o.classList.remove('is-active')});
+      r.closest('.hl-opt').classList.add('is-active');
+      if(idIn)idIn.value=r.dataset.variant;
+      if(planIn){if(r.dataset.plan){planIn.value=r.dataset.plan;planIn.disabled=false;}else{planIn.value='';planIn.disabled=true;}}
+    });
+  });
+  var main=root.querySelector('[data-hl-main]');
+  root.querySelectorAll('[data-hl-thumb]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var img=main&&main.querySelector('img');if(img){img.src=b.dataset.hlThumb;img.removeAttribute('srcset');}
+      root.querySelectorAll('[data-hl-thumb]').forEach(function(x){x.classList.remove('is-active')});b.classList.add('is-active');
+    });
+  });
+})();
+</script>
+</div>
+
+{% schema %}
+{
+  "name": "Hushly Landing",
+  "tag": "section",
+  "class": "hushly-landing",
+  "settings": [
+    { "type": "header", "content": "Product" },
+    { "type": "product", "id": "product", "label": "Product (variants named '1 Pack', '3 Packs' …)" },
+    { "type": "text", "id": "bundle_badge", "label": "3-pack badge", "default": "BUY 2 · GET 1 FREE" },
+    { "type": "text", "id": "pack_description", "label": "Pack description", "default": "30 nasal strips · 30 nights" },
+    { "type": "text", "id": "cta_label", "label": "Main button text", "default": "Get 3 for the Price of 2" },
+
+    { "type": "header", "content": "Top bar & hero" },
+    { "type": "text", "id": "announcement", "label": "Announcement bar", "default": "Buy 2, get 1 free on your first order" },
+    { "type": "text", "id": "hero_line_1", "label": "Headline line 1", "default": "Breathe easy." },
+    { "type": "text", "id": "hero_line_2", "label": "Headline line 2 (italic)", "default": "Sleep quiet." },
+    { "type": "textarea", "id": "hero_text", "label": "Hero text", "default": "A drug-free nasal strip that gently opens your airways, so you breathe easier through your nose — for quieter, deeper-feeling nights.*" },
+    { "type": "image_picker", "id": "hero_image", "label": "Hero image (uses product image if empty)" },
+    { "type": "text", "id": "loved_by", "label": "Social proof line", "default": "Loved by [12,000+] sleepers" },
+    { "type": "text", "id": "rating", "label": "Rating", "default": "4.8" },
+    { "type": "text", "id": "review_count", "label": "Review count", "default": "[X,XXX]" },
+
+    { "type": "header", "content": "Reviews (use real customer reviews)" },
+    { "type": "text", "id": "review_1_title", "label": "Review 1 title", "default": "[Review headline — partner angle]" },
+    { "type": "textarea", "id": "review_1_text", "label": "Review 1 text", "default": "[Placeholder review: what changed for the person they share a bed with.]" },
+    { "type": "text", "id": "review_1_name", "label": "Review 1 name", "default": "[First name L.]" },
+    { "type": "text", "id": "review_2_title", "label": "Review 2 title", "default": "[Review headline — comfort angle]" },
+    { "type": "textarea", "id": "review_2_text", "label": "Review 2 text", "default": "[Placeholder review: how comfortable it is and how easily it comes off in the morning.]" },
+    { "type": "text", "id": "review_2_name", "label": "Review 2 name", "default": "[First name L.]" },
+    { "type": "text", "id": "review_3_title", "label": "Review 3 title", "default": "[Review headline — energy angle]" },
+    { "type": "textarea", "id": "review_3_text", "label": "Review 3 text", "default": "[Placeholder review: how they feel when they wake up compared to before.]" },
+    { "type": "text", "id": "review_3_name", "label": "Review 3 name", "default": "[First name L.]" },
+
+    { "type": "header", "content": "How it works" },
+    { "type": "image_picker", "id": "step_1_image", "label": "Step 1 image (Apply)" },
+    { "type": "image_picker", "id": "step_2_image", "label": "Step 2 image (Breathe)" },
+    { "type": "image_picker", "id": "step_3_image", "label": "Step 3 image (Sleep)" },
+
+    { "type": "header", "content": "Results" },
+    { "type": "image_picker", "id": "results_image", "label": "Results image" },
+    { "type": "text", "id": "stat_1", "label": "Stat 1", "default": "XX%" },
+    { "type": "text", "id": "stat_2", "label": "Stat 2", "default": "XX%" },
+    { "type": "text", "id": "stat_3", "label": "Stat 3", "default": "XX%" },
+    { "type": "text", "id": "stats_footnote", "label": "Stats footnote", "default": "*Based on a survey of [XXX] Hushly customers after [XX] nights of use. Individual results vary." },
+    { "type": "text", "id": "buybox_stat", "label": "Buy box stat line", "default": "[XX%] of customers say their nights felt quieter within a week*" },
+
+    { "type": "header", "content": "Video reviews (use real customer videos)" },
+    { "type": "video", "id": "video_1", "label": "Video 1" },
+    { "type": "text", "id": "video_1_title", "label": "Video 1 title", "default": "[Outcome in their own words]" },
+    { "type": "video", "id": "video_2", "label": "Video 2" },
+    { "type": "text", "id": "video_2_title", "label": "Video 2 title", "default": "[Outcome in their own words]" },
+    { "type": "video", "id": "video_3", "label": "Video 3" },
+    { "type": "text", "id": "video_3_title", "label": "Video 3 title", "default": "[Outcome in their own words]" },
+
+    { "type": "header", "content": "Guarantee & final offer" },
+    { "type": "text", "id": "support_email", "label": "Support email", "default": "[support@hushly.com]" },
+    { "type": "image_picker", "id": "final_image", "label": "Final offer image (3-pack)" },
+    { "type": "textarea", "id": "disclaimer", "label": "Disclaimer", "default": "*Statements based on customer surveys; individual results vary. Hushly is not a medical device and is not intended to diagnose, treat, cure or prevent any disease, including sleep apnea. If you snore loudly, gasp or stop breathing during sleep, see a doctor before use." }
+  ],
+  "presets": [ { "name": "Hushly Landing" } ]
+}
+{% endschema %}
