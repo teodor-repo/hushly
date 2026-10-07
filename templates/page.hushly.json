@@ -1,9 +1,51 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hushly": {
       "type": "hushly-landing",
-      "settings": {}
+      "settings": {
+        "product": "hushly-nasal-strips",
+        "bundle_badge": "BUY 2 · GET 1 FREE",
+        "pack_description": "30 nasal strips · 30 nights",
+        "cta_label": "Get 3 for the Price of 2",
+        "announcement": "Buy 2, get 1 free on your first order",
+        "hero_line_1": "Breathe easy.",
+        "hero_line_2": "Sleep quiet.",
+        "hero_text": "A drug-free nasal strip that gently opens your airways, so you breathe easier through your nose — for quieter, deeper-feeling nights.*",
+        "loved_by": "Loved by [12,000+] sleepers",
+        "rating": "4.8",
+        "review_count": "[X,XXX]",
+        "review_1_title": "[Review headline — partner angle]",
+        "review_1_text": "[Placeholder review: what changed for the person they share a bed with.]",
+        "review_1_name": "[First name L.]",
+        "review_2_title": "[Review headline — comfort angle]",
+        "review_2_text": "[Placeholder review: how comfortable it is and how easily it comes off in the morning.]",
+        "review_2_name": "[First name L.]",
+        "review_3_title": "[Review headline — energy angle]",
+        "review_3_text": "[Placeholder review: how they feel when they wake up compared to before.]",
+        "review_3_name": "[First name L.]",
+        "stat_1": "XX%",
+        "stat_2": "XX%",
+        "stat_3": "XX%",
+        "stats_footnote": "*Based on a survey of [XXX] Hushly customers after [XX] nights of use. Individual results vary.",
+        "buybox_stat": "[XX%] of customers say their nights felt quieter within a week*",
+        "video_1_title": "[Outcome in their own words]",
+        "video_2_title": "[Outcome in their own words]",
+        "video_3_title": "[Outcome in their own words]",
+        "support_email": "[support@hushly.com]",
+        "disclaimer": "*Statements based on customer surveys; individual results vary. Hushly is not a medical device and is not intended to diagnose, treat, cure or prevent any disease, including sleep apnea. If you snore loudly, gasp or stop breathing during sleep, see a doctor before use."
+      }
     }
   },
-  "order": ["hushly"]
+  "order": [
+    "hushly"
+  ]
 }
