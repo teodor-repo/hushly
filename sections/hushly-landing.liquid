@@ -227,7 +227,7 @@
 </style>
 
 {%- comment -%} 00 · Announcement {%- endcomment -%}
-<div class="hl-bar">{{ section.settings.announcement }}<a href="#hl-shop-{{ section.id }}">Claim yours →</a></div>
+{%- if section.settings.announcement != blank -%}<div class="hl-bar">{{ section.settings.announcement }}<a href="#hl-shop-{{ section.id }}">Claim yours →</a></div>{%- endif -%}
 
 {%- comment -%} 02 · Hero {%- endcomment -%}
 <section class="hl-hero">
@@ -508,7 +508,7 @@
     { "type": "text", "id": "cta_label", "label": "Main button text", "default": "Get 3 for the Price of 2" },
 
     { "type": "header", "content": "Top bar & hero" },
-    { "type": "text", "id": "announcement", "label": "Announcement bar", "default": "Buy 2, get 1 free on your first order" },
+    { "type": "text", "id": "announcement", "label": "Announcement bar", "info": "Leave empty to hide (e.g. if you use your theme's announcement bar instead)", "default": "Buy 2, get 1 free on your first order" },
     { "type": "text", "id": "hero_line_1", "label": "Headline line 1", "default": "Breathe easy." },
     { "type": "text", "id": "hero_line_2", "label": "Headline line 2 (italic)", "default": "Sleep quiet." },
     { "type": "textarea", "id": "hero_text", "label": "Hero text", "default": "A drug-free nasal strip that gently opens your airways, so you breathe easier through your nose — for quieter, deeper-feeling nights.*" },
